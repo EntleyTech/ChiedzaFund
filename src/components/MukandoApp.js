@@ -22,9 +22,9 @@ export default function MukandoApp() {
 
   // Initialize demo data
   const [users, setUsers] = useState([
-    { id: 1, name: 'Genius Garauzive', email: 'genius@gmail.com', password: 'demo123', phone: '+263771428528', role: 'user' },
-    { id: 2, name: 'Entley', email: 'entley@gmail.com', password: 'demo123', phone: '+263723456789', role: 'user' },
-    { id: 3, name: 'Entleytech Admin', email: 'entleytech@gmail.com', password: 'Genius@2002', phone: '+263734567890', role: 'admin' }
+    { id: 1, name: 'Genius Garauzive', email: 'genius@gmail.com', password: '', phone: '+263771428528', role: 'user' },
+    { id: 2, name: 'Entley', email: 'entley@gmail.com', password: '', phone: '+263723456789', role: 'user' },
+    { id: 3, name: 'Entleytech Admin', email: 'entleytech@gmail.com', password: '', phone: '+263734567890', role: 'admin' }
   ])
 
   const [groups, setGroups] = useState([
@@ -63,7 +63,7 @@ export default function MukandoApp() {
       setShowAuth(false)
       generateNotifications(user)
     } else {
-      alert('Invalid credentials. Try: entleytech@gmail.com / demo123')
+      alert('Invalid credentials. Please check your email and password and try again.')
     }
   }
 
@@ -307,6 +307,25 @@ export default function MukandoApp() {
     )
   }
 
+  // Update current user's profile (name, email, phone, password)
+  const handleUpdateProfile = (updatedFields) => {
+    if (!currentUser) return
+    const allowed = ['name', 'email', 'phone', 'password']
+    const payload = {}
+    Object.keys(updatedFields).forEach(k => { if (allowed.includes(k)) payload[k] = updatedFields[k] })
+
+    // Basic validation: password length if provided
+    if (payload.password && payload.password.length < 8) {
+      alert('Password must be at least 8 characters long')
+      return
+    }
+
+    const updatedUser = { ...currentUser, ...payload }
+    setCurrentUser(updatedUser)
+    setUsers(prev => prev.map(u => u.id === updatedUser.id ? updatedUser : u))
+    alert('Profile updated successfully')
+  }
+
   // Calculate stats
   const calculateStats = () => {
     const userGroups = getUserGroups()
@@ -457,6 +476,7 @@ export default function MukandoApp() {
             onSelectGroup={setSelectedGroup}
             onCreateGroup={() => setShowCreateGroup(true)}
             onRequestJoin={handleRequestJoin}
+            onUpdateProfile={handleUpdateProfile}
             notifications={notifications}
           />
         ) : (

@@ -138,14 +138,7 @@ export default function AuthScreen({ mode, setMode, onLogin, onRegister }) {
           </button>
         </div>
 
-        <div className="mt-6 p-4 bg-slate-50 rounded-lg">
-          <p className="text-xs text-slate-600 text-center font-semibold mb-2">
-            Admin: entleytech@gmail.com / Genius@2002
-          </p>
-          <p className="text-xs text-slate-600 text-center">
-            Demo: genius@gmail.com / demo123
-          </p>
-        </div>
+        {/* Demo credentials removed for security. Please contact the admin to get access or register a new account. */}
       </div>
     </div>
   )

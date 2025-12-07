@@ -10,7 +10,7 @@ import UserProfile from './UserProfile'
 import UserCommunication from './UserCommunication'
 import GroupRulesAndPolicies from './GroupRulesAndPolicies'
 
-export default function Dashboard({ user, groups, stats, onSelectGroup, onCreateGroup, notifications }) {
+export default function Dashboard({ user, groups, stats, onSelectGroup, onCreateGroup, notifications, onUpdateProfile }) {
   const [showJoinGroup, setShowJoinGroup] = useState(false)
   const [joinGroupForm, setJoinGroupForm] = useState({
     groupCode: '',
@@ -94,7 +94,7 @@ export default function Dashboard({ user, groups, stats, onSelectGroup, onCreate
         {activeTab === 'payouts' && <UserPayoutSchedule user={user} group={demoGroup} />}
         {activeTab === 'rules' && <GroupRulesAndPolicies group={demoGroup} user={user} />}
         {activeTab === 'communication' && <UserCommunication user={user} group={demoGroup} />}
-        {activeTab === 'profile' && <UserProfile user={user} />}
+        {activeTab === 'profile' && <UserProfile user={user} onUpdateProfile={onUpdateProfile} />}
       </div>
 
       {/* Join Group Modal */}

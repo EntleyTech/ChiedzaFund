@@ -1,9 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { User, Mail, Phone, MapPin, Bank, Settings, Edit, Save, Eye, EyeOff, Award, ActivitySquare } from 'lucide-react'
 
-export default function UserProfile({ user }) {
+export default function UserProfile({ user, onUpdateProfile }) {
   const [editMode, setEditMode] = useState(false)
   const [profileData, setProfileData] = useState({
     name: user?.name || '',
@@ -18,6 +18,11 @@ export default function UserProfile({ user }) {
     }
   })
 
+  // Keep local profileData in sync when parent user updates
+  React.useEffect(() => {
+    setProfileData(prev => ({ ...prev, name: user?.name || '', email: user?.email || '', phone: user?.phone || '' }))
+  }, [user])
+
   const [personalRecords] = useState({
     joinDate: '2024-11-01',
     totalGroups: 2,
@@ -31,8 +36,11 @@ export default function UserProfile({ user }) {
 
   const handleSaveProfile = () => {
     console.log('Saving profile:', profileData)
+    // Notify parent to persist changes
+    if (typeof onUpdateProfile === 'function') {
+      onUpdateProfile({ name: profileData.name, email: profileData.email, phone: profileData.phone })
+    }
     setEditMode(false)
-    alert('Profile updated successfully!')
   }
 
   return (
